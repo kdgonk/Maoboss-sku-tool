@@ -1,0 +1,22 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SKU 進貨建議工具</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>SKU 進貨建議工具</h1>
+  <p>請輸入資料（格式：SKU名稱, 價格, 評論數, 銷量占比%）</p>
+  <textarea id="inputData" rows="10" placeholder="貼上資料，每行一筆"></textarea>
+  <div class="settings">
+    <label>總進貨量：<input type="number" id="totalStock" value="30" /></label>
+    <label>單一SKU最多數量：<input type="number" id="maxPerSKU" value="10" /></label>
+    <button onclick="analyze()">分析</button>
+  </div>
+  <div id="output"></div>
+  <script src="script.js"></script>
+</body>
+</html>
