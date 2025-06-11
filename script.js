@@ -5,8 +5,8 @@ if (password !== "maoboss") {
   document.body.innerHTML = "";
 }
 
-let currentTable = "";
 let notionTable = "";
+let notionCSV = "";
 
 function analyze() {
   const rawData = document.getElementById('inputData').value.trim().split('\n');
@@ -16,11 +16,10 @@ function analyze() {
   let errorLines = [];
 
   for (let i = 0; i < rawData.length; i++) {
-    let line = rawData[i].trim().replace(/，/g, ','); // 全形逗號轉半形
+    let line = rawData[i].trim().replace(/，/g, ',');
     if (!line) continue;
 
     let parts = [];
-
     if (line.includes(',')) {
       parts = line.split(',').map(p => p.trim());
     } else if (line.includes('\t')) {
@@ -51,45 +50,39 @@ function analyze() {
     alert("第 " + errorLines.join(', ') + " 行格式錯誤，已略過");
   }
 
-  let html = '<table><tr><th>SKU 名稱</th><th>價格</th><th>評論數</th><th>銷量佔比</th><th>建議進貨</th><th>最終進貨</th></tr>';
-  let csv = "SKU名稱,價格,評論數,銷量佔比,建議進貨,最終進貨\n";
-  let notion = "";
+  let html = '<table><tr><th>SKU 名稱</th><th>進貨建議</th><th>最終進貨</th></tr>';
+  let notionText = "規格\t進貨數量\t售價\n";
+  let csv = "規格,進貨數量,售價\n";
 
   for (let row of rows) {
     const suggested = Math.round(row.ratio * totalStock);
     const final = Math.min(suggested, maxPerSKU);
-    html += `<tr><td>${row.name}</td><td>${row.price}</td><td>${row.comments}</td><td>${(row.ratio * 100).toFixed(2)}%</td><td>${suggested}</td><td>${final}</td></tr>`;
-    csv += `${row.name},${row.price},${row.comments},${(row.ratio * 100).toFixed(2)}%,${suggested},${final}\n`;
-    notion += `${row.name}\t${row.price}\t${(row.ratio * 100).toFixed(2)}%\t${suggested}\t${final}\t\t\n`;
+    html += `<tr><td>${row.name}</td><td>${suggested}</td><td>${final}</td></tr>`;
+    notionText += `${row.name}\t${final}\t\n`;
+    csv += `${row.name},${final},\n`;
   }
 
   html += '</table>';
   document.getElementById('output').innerHTML = html;
-  currentTable = csv;
-  notionTable = notion;
-}
-
-function copyResult() {
-  if (!currentTable) return alert("請先分析再複製");
-  navigator.clipboard.writeText(currentTable)
-    .then(() => alert("已複製到剪貼簿"))
-    .catch(() => alert("複製失敗"));
+  notionTable = notionText;
+  notionCSV = csv;
 }
 
 function copyNotion() {
   if (!notionTable) return alert("請先分析再複製");
   navigator.clipboard.writeText(notionTable)
-    .then(() => alert("Notion 格式已複製"))
+    .then(() => alert("已複製 Notion 格式"))
     .catch(() => alert("複製失敗"));
 }
 
 function downloadCSV() {
-  if (!currentTable) return alert("請先分析再匯出");
-  const blob = new Blob([currentTable], { type: "text/csv;charset=utf-8;" });
+  if (!notionCSV) return alert("請先分析再匯出");
+  const BOM = "\uFEFF";
+  const blob = new Blob([BOM + notionCSV], { type: "text/csv;charset=utf-8;" });
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.setAttribute("href", url);
-  link.setAttribute("download", "sku_result.csv");
+  link.setAttribute("download", "notion進貨表.csv");
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);

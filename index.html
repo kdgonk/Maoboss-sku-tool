@@ -9,14 +9,14 @@
 </head>
 <body>
   <h1>SKU 進貨建議工具</h1>
-  <p>請輸入資料（格式不限，會自動解析：SKU名稱 價格 評論數 銷量佔比 或使用逗號）</p>
+  <p>請輸入資料（格式不限：SKU名稱 價格 評論數 銷量佔比）</p>
   <textarea id="inputData" rows="10" placeholder="貼上資料，每行一筆"></textarea>
   <div class="settings">
     <label>總進貨量：<input type="number" id="totalStock" value="30" /></label>
     <label>單一SKU最多數量：<input type="number" id="maxPerSKU" value="10" /></label>
     <button onclick="analyze()">分析</button>
-    <button onclick="copyResult()">📋 複製結果</button>
-    <button onclick="copyNotion()">🧾 複製 Notion 格式</button> <button onclick="downloadCSV()">⬇ 匯出CSV</button>
+    <button onclick="copyNotion()">🧾 複製 Notion 格式</button>
+    <button onclick="downloadCSV()">⬇ 匯出 CSV</button>
   </div>
   <div id="output"></div>
   <script src="script.js"></script>
