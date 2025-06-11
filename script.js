@@ -12,18 +12,35 @@ function analyze() {
   const totalStock = parseInt(document.getElementById('totalStock').value);
   const maxPerSKU = parseInt(document.getElementById('maxPerSKU').value);
   let rows = [];
+  let errorLines = [];
 
-  for (let line of rawData) {
-    line = line.trim().replace(/，/g, ','); // 換全形逗號
+  for (let i = 0; i < rawData.length; i++) {
+    let line = rawData[i].trim()
+      .replace(/，/g, ',') // 全形逗號換英文
+      .replace(/\s+/g, ','); // 多空白、Tab 換成逗號
+
     if (!line) continue;
-    let parts = line.includes(',') ? line.split(',') : line.split(/\s+/);
-    if (parts.length !== 4) continue;
+    const parts = line.split(',');
+    if (parts.length !== 4) {
+      errorLines.push(i + 1);
+      continue;
+    }
+
     const name = parts[0].trim();
     const price = parseFloat(parts[1]);
     const comments = parseInt(parts[2]);
     const ratio = parseFloat(parts[3].replace('%', '')) / 100;
-    if (isNaN(price) || isNaN(comments) || isNaN(ratio)) continue;
+
+    if (isNaN(price) || isNaN(comments) || isNaN(ratio)) {
+      errorLines.push(i + 1);
+      continue;
+    }
+
     rows.push({ name, price, comments, ratio });
+  }
+
+  if (errorLines.length > 0) {
+    alert("第 " + errorLines.join(', ') + " 行格式錯誤，已略過");
   }
 
   let html = '<table><tr><th>SKU 名稱</th><th>價格</th><th>評論數</th><th>銷量佔比</th><th>建議進貨</th><th>最終進貨</th></tr>';
