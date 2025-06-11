@@ -77,8 +77,8 @@ function copyNotion() {
 
 function downloadCSV() {
   if (!notionCSV) return alert("請先分析再匯出");
-  const BOM = "\uFEFF";
-  const blob = new Blob([BOM + notionCSV], { type: "text/csv;charset=utf-8;" });
+  const BOM = new Uint8Array([0xEF, 0xBB, 0xBF]); // UTF-8 BOM bytes
+  const blob = new Blob([BOM, notionCSV], { type: "text/csv;charset=utf-8;" });
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.setAttribute("href", url);
