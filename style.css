@@ -1,34 +1,23 @@
 
 body {
-  font-family: Arial, sans-serif;
+  font-family: sans-serif;
+  background: #f8fafd;
   padding: 20px;
-  background: #f6f8fa;
-  color: #333;
-}
-h1 {
-  text-align: center;
 }
 textarea {
   width: 100%;
-  font-size: 14px;
-  margin-bottom: 15px;
+  height: 180px;
 }
 .settings {
-  margin-bottom: 20px;
-}
-label {
-  margin-right: 20px;
-}
-button {
-  margin-right: 10px;
-  padding: 5px 10px;
+  margin-top: 10px;
 }
 table {
   width: 100%;
+  margin-top: 20px;
   border-collapse: collapse;
 }
 th, td {
-  border: 1px solid #999;
+  border: 1px solid #aaa;
   padding: 8px;
   text-align: left;
 }

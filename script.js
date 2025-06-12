@@ -19,13 +19,9 @@ function analyze() {
     let line = rawData[i].trim().replace(/，/g, ',');
     if (!line) continue;
 
-    let parts = [];
-    if (line.includes(',')) {
-      parts = line.split(',').map(p => p.trim());
-    } else if (line.includes('\t')) {
-      parts = line.split('\t').map(p => p.trim());
-    } else {
-      parts = line.trim().split(/\s+/).map(p => p.trim());
+    let parts = line.split(/\t|,/).map(p => p.trim());
+    if (parts.length < 4) {
+      parts = line.split(/\s+/).map(p => p.trim());
     }
 
     if (parts.length < 4) {
@@ -33,16 +29,20 @@ function analyze() {
       continue;
     }
 
-    const name = parts.slice(0, parts.length - 3).join(' ');
-    const price = parseFloat(parts[parts.length - 3]);
-    const comments = parseInt(parts[parts.length - 2]);
-    const ratio = parseFloat(parts[parts.length - 1].replace('%', '')) / 100;
+    const priceRaw = parts[parts.length - 3];
+    const commentsRaw = parts[parts.length - 2];
+    const ratioRaw = parts[parts.length - 1];
+
+    const price = parseFloat(priceRaw);
+    const comments = parseInt(commentsRaw);
+    const ratio = parseFloat(ratioRaw.replace('%', '')) / 100;
 
     if (isNaN(price) || isNaN(comments) || isNaN(ratio)) {
       errorLines.push(i + 1);
       continue;
     }
 
+    const name = parts.slice(0, parts.length - 3).join(' ');
     rows.push({ name, price, comments, ratio });
   }
 
@@ -77,7 +77,7 @@ function copyNotion() {
 
 function downloadCSV() {
   if (!notionCSV) return alert("請先分析再匯出");
-  const BOM = new Uint8Array([0xEF, 0xBB, 0xBF]); // UTF-8 BOM bytes
+  const BOM = new Uint8Array([0xEF, 0xBB, 0xBF]);
   const blob = new Blob([BOM, notionCSV], { type: "text/csv;charset=utf-8;" });
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
