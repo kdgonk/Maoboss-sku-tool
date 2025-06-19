@@ -33,6 +33,8 @@ function analyze() {
     const commentsRaw = parts[parts.length - 2];
     const priceRaw = parts[parts.length - 3];
 
+    if (ratioRaw === '--' || ratioRaw === '' || ratioRaw === '—') continue;
+
     const ratio = parseFloat((ratioRaw || "").replace('%', '')) / 100;
     const comments = parseInt(commentsRaw || "0");
     const price = parseFloat(priceRaw || "0");
@@ -47,7 +49,6 @@ function analyze() {
     rows.push({ name, price, comments, ratio });
   }
 
-  // 進行自定排序：依照「顏色 + 尺碼」排序（若可解析）
   rows.sort((a, b) => {
     const [colorA, sizeA] = extractColorSize(a.name);
     const [colorB, sizeB] = extractColorSize(b.name);
@@ -58,7 +59,6 @@ function analyze() {
     }
   });
 
-  // 顯示錯誤（如果有）
   if (errorLines.length > 0) {
     alert(errorLines.join('\n'));
   }
