@@ -70,7 +70,7 @@ function analyze() {
   for (let row of rows) {
     const suggested = Math.round(row.ratio * totalStock);
     const final = Math.min(suggested, maxPerSKU);
-    html += `<tr><td>${row.name}</td><td>${suggested}</td><td>${final}</td></tr>`;
+    html += `<tr><td>${row.name}</td><td>${suggested}</td><td${suggested > final ? ' style="color:red;font-weight:bold;"' : ''}>${final}</td></tr>`;
     notionText += `${row.name}\t${final}\t\n`;
     csv += `${row.name},${final},\n`;
   }
