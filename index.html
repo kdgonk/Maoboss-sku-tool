@@ -4,20 +4,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SKU 進貨建議工具 - V2.7</title>
+  <title>SKU 進貨建議工具 - V2.8</title>
   <link rel="stylesheet" href="style.css" />
-  <style>
-    .version-badge {
-      position: absolute;
-      top: 10px;
-      right: 15px;
-      font-size: 12px;
-      color: #666;
-    }
-  </style>
 </head>
 <body>
-  <div class="version-badge">Version: V2.7</div>
+  <div class="version-badge">Version: V2.8</div>
   <h1>SKU 進貨建議工具</h1>
   <p>請輸入資料（格式不限，會自動解析：SKU名稱 價格 評論數 銷量佔比 或使用逗號）</p>
   <textarea id="inputData" placeholder="貼上海鷹資料，一行一筆"></textarea>
@@ -27,7 +18,7 @@
     <button onclick="analyze()">分析</button>
     <button onclick="copyNotion()">🧾 複製 Notion 格式</button>
     <button onclick="downloadCSV()">⬇ 匯出 CSV</button>
-    <p style="font-size: 12px; color: #999; margin-top: 5px;">目前版本：V2.7｜如遇錯誤請確認是否為最新版本</p>
+    <p style="font-size: 12px; color: #999; margin-top: 5px;">目前版本：V2.8｜如遇錯誤請確認是否為最新版本</p>
   </div>
   <div id="output"></div>
   <script src="script.js"></script>
